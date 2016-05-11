@@ -1,6 +1,6 @@
-### Deploying a Flask application in AWS: An end-to-end tutorial
+### Deploying a Flask application in AWS
 
-This is the code that goes along with the detailed writeup here:
+Code drawn, in part, from post below:
 
 https://medium.com/@rodkey/deploying-a-flask-application-on-aws-a72daba6bb80
 
