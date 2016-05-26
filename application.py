@@ -6,44 +6,42 @@ Uses Elastic Beanstalk and RDS
 '''
 
 from flask import Flask, render_template, request
+from sqlalchemy import create_engine
+from nvd3 import pieChart
+import MySQLdb
+import pandas as pd
+import numpy as np
 from application import db
 from application.models import Data
-from application.forms import EnterDBInfo, RetrieveDBInfo
 
 # Elastic Beanstalk initalization
 application = Flask(__name__)
 application.debug=True
-# change this to your own value
-application.secret_key = 'cC1YCIWOj9GgWspgNEo2'   
+application.secret_key = 'cC1YCIWOj9GgWspgNEo2'
 
-@application.route('/', methods=['GET', 'POST'])
-@application.route('/index', methods=['GET', 'POST'])
-def index():
-    form1 = EnterDBInfo(request.form) 
-    form2 = RetrieveDBInfo(request.form) 
+conn = MySQLdb.connect(host="flasktest.cf4uesukkwab.us-east-1.rds.amazonaws.com", user="flask", passwd="California1", db="flaskdb");
+cursor = conn.cursor();
+sql = 'SELECT Date_o, Product, Company, State, Zip_code FROM Data_1'
+df = pd.read_sql(sql, conn)
+conn.close()
+
+#application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://flask:California1@flasktest.cf4uesukkwab.us-east-1.rds.amazonaws.com:3306/flaskdb'
+
+
+@application.route('/')
+#@application.route('/index', methods=['GET', 'POST'])
+#def hello_world():
+
+	#string = str(df)[0:500]
+	
+	#return string
+
+def analysis():
+    x = pd.DataFrame(df)
+    return render_template("index.html", name='this is my name', data=x.to_html())	
+	
     
-    if request.method == 'POST' and form1.validate():
-        data_entered = Data(notes=form1.dbNotes.data)
-        try:     
-            db.session.add(data_entered)
-            db.session.commit()        
-            db.session.close()
-        except:
-            db.session.rollback()
-        return render_template('thanks.html', notes=form1.dbNotes.data)
-        
-    if request.method == 'POST' and form2.validate():
-        try:   
-            num_return = int(form2.numRetrieve.data)
-            query_db = Data.query.order_by(Data.id.desc()).limit(num_return)
-            for q in query_db:
-                print(q.notes)
-            db.session.close()
-        except:
-            db.session.rollback()
-        return render_template('results.html', results=query_db, num_return=num_return)                
     
-    return render_template('index.html', form1=form1, form2=form2)
 
 if __name__ == '__main__':
     application.run(host='0.0.0.0')
