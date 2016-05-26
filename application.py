@@ -7,8 +7,10 @@ Uses Elastic Beanstalk and RDS
 
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine
+from nvd3 import pieChart
 import MySQLdb
 import pandas as pd
+import numpy as np
 from application import db
 from application.models import Data
 
@@ -28,11 +30,16 @@ conn.close()
 
 @application.route('/')
 #@application.route('/index', methods=['GET', 'POST'])
-def hello_world():
+#def hello_world():
 
-	string = str(df)[0:500]
+	#string = str(df)[0:500]
 	
-	return string
+	#return string
+
+def analysis():
+    x = pd.DataFrame(df)
+    return render_template("index.html", name='this is my name', data=x.to_html())	
+	
     
     
 
