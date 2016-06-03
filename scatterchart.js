@@ -1,17 +1,4 @@
-{% extends "base.html" %} 
-{% block content %}
-
-
-<h1>{{name}}</h1>
-<h2> Data from NYC Open Data</h2>
-
-
-<head>
-    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
-</head>
-<body>
-    <script type="text/javascript">
-    var margin = {top: 20, right: 20, bottom: 30, left: 80};
+var margin = {top: 20, right: 20, bottom: 30, left: 80};
     var width = 880 - margin.left - margin.right;
     var height = 500 - margin.top - margin.bottom;
     
@@ -115,12 +102,3 @@
       .attr("dy", ".35em")
       .style("text-anchor", "end")
       .text(function(d) { return d;})
-    
-    
-    
-    </script>
-  </body>
-</html>
-
-
-{% endblock %} 
