@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 from application import db
 from application.models import Data
-import random
+
 
 # Elastic Beanstalk initalization
 
